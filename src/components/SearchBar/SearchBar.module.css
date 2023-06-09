@@ -1,0 +1,38 @@
+.barra {
+    display: flex;
+    justify-self: flex-end;
+    padding: auto;
+  }
+  
+  .barra input {
+    min-height: 80%;
+    max-width: 100%;
+    padding: .5rem 1rem;
+    color: #fff;
+    font-size: 1rem;
+    border: 1px solid #3fd846;
+    border-radius: 6px 0 0 6px;
+    background-color: transparent;
+  }
+  
+  .barra button {
+    min-height: 80%;
+    padding: .5em 1em;
+    border: none;
+    border-radius: 0 6px 6px 0;
+    background-color: #3fd846;
+    color: #020202;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color .3s ease-in-out;
+  }
+  
+  .barra button:hover {
+    background-color: #55aff8;
+  }
+  
+  .barra input:focus, .barra input:focus visible {
+    border-color: #3898EC;
+    outline: none;
+  }
+  

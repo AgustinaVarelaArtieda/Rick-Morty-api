@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'RickFuente';
+    src: url('../Fuentes/get_schwifty-webfont.woff2') format('woff2'),
+    url('../Fuentes/get_schwifty-webfont.woff') format('woff');
+    font-style: normal;
+    font-weight: normal;
+}
+
+.contenedor{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-basis: 15rem;
+    box-sizing: border-box ;
+    margin: .5rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+    border-radius: 1rem;
+    border-style: ridge;
+    border-color: #015805;
+    border-width: 1px;
+    background-image: url(./portalimagen.png);
+    background-position: center;
+}
+
+.contenedor button{
+    padding: 0.2rem;
+    align-self: flex-end;
+    background-color: #c43f3f;
+    color: #fff;
+    font-size: .5rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0px 4px 0px #22721f;
+    transition: all 0.2s ease-in-out;
+    margin:0.25rem
+}
+
+.contenedor button:hover {
+    background-color: #ff6767;
+    box-shadow: 2px 0px 0px #1f751c;
+    transform: translateY(2px);
+}
+
+.contenedor h2{
+    font-size: 2rem;
+    font-family: 'RickFuente';
+    -webkit-text-stroke: 0.05px #15241c ;
+    text-shadow: 0px 0px 15px #f0f0f0;
+    color: #0095f8;
+    text-align: center;
+    margin:0.25rem
+}
+
+.contenedor img{
+    position: center;
+    width: 90%;
+    border-radius: 70%;
+}
+
+.contenedor h3{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: smaller;
+    width: 80%;
+    color: #080808;
+    text-align: center;
+    letter-spacing: 0.5px;
+    margin:0.1em
+}
