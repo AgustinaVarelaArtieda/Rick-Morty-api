@@ -63,7 +63,7 @@ function App() {
    
    //Funcion para BUSCAR 
    function searchHandler(id) {
-      axios(`https://rickandmortyapi.com/api/character/${id}`).then(({ data }) => {
+      axios(`http://localhost:3001/rickandmorty/character/${id}`).then(({ data }) => {
          if (data.name) {
             if(!characters.find((char)=>char.id===data.id)){
                setCharacters((oldChars) => [...oldChars, data]);
@@ -92,7 +92,7 @@ function App() {
       
       if(!haveIt.includes(random)){    //si el array no incluye el numero random
          haveIt.push(random);          //lo agrego al array y lo muestro
-         fetch(`https://rickandmortyapi.com/api/character/${random}`)
+         fetch(`http://localhost:3001/rickandmorty/character/${random}`)
         .then((response) => response.json())
         .then((data) => {
            if (data.name&&!characters.find((char)=>char.id===data.id)) {
