@@ -42,18 +42,29 @@ function App() {
    const navigate=useNavigate();
    //creo un estado local ACCESS
    const [access,setAccess]=useState(false)
-   //creo parámetros fijos para loguearme
-   const EMAIL="agusvarela5@gmail.com";
-   const PASSWORD="agus123";
+   
+   //creo parámetros fijos para loguearme-ANTES DE EXPRESS
+   // const EMAIL="agusvarela5@gmail.com";
+   // const PASSWORD="agus123";
 
-   //Funcion LOGIN
-   function loginHandler(data){
-      if(data.email===EMAIL && data.password===PASSWORD){
-         setAccess(true)
-         navigate('/home')
-         }else{
-            alert("Datos incorrectos")
-            }
+   //Funcion LOGIN - ANTES DE EXPRESS
+   // function loginHandler(data){
+   //    if(data.email===EMAIL && data.password===PASSWORD){
+   //       setAccess(true)
+   //       navigate('/home')
+   //       }else{
+   //          alert("Datos incorrectos")
+   //          }
+   // }
+   //Funcion LOGIN - CON EXPRESS
+   function loginHandler(userData) {
+      const { email, password } = userData;
+      const URL = 'http://localhost:3001/rickandmorty/login';
+      axios(URL + `?email=${email}&password=${password}`).then(({data}) => {
+         const {access} = data;
+         setAccess(data);
+         access && navigate('/home');
+      });
    }
 
    //Para verificar si estas logueado
