@@ -1,13 +1,20 @@
 let myFavorites=[];
 
 function postFav(req,res){
-    myFavorites.push(req.body);
-    res.json(myFavorites)
+    const character=req.body;
+
+    myFavorites.push(character);
+    res.status(200).json(myFavorites);
 }
 
 function deleteFav(req,res){
-    myFavorites.splice(req.params.id,1);
-    res.json(myFavorites)
+    const {id}=req.params;
+
+    const filtered=myFavorites.filter(
+        (character)=>character.id!==Number(id));
+        
+    myFavorites=filtered;
+    res.status(200).json(filtered)
 }
 
-module.exports= deleteFav,postFav
+module.exports= {deleteFav, postFav}
