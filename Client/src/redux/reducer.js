@@ -1,8 +1,11 @@
-import { ADD_FAV, FILTER, REMOVE_FAV, ORDER, RESET } from "./actions";
+import {ADD_FAV, FILTER, REMOVE_FAV, ORDER, RESET} from "./actions";
 
-let initialState = {myFavorites:[],allCharacters:[]}
+let initialState = {
+    myFavorites:[],
+    allCharacters:[]
+};
 
-function rootReducer(state = initialState, action){
+function rootReducer(state=initialState, action){
     switch(action.type){
         case ADD_FAV:
             //ANTES DE EXPRESS
@@ -12,8 +15,11 @@ function rootReducer(state = initialState, action){
             //     myFavorites: [...added],
             //     allCharacters: [...added]
             // }
-            //DESPUES DE EXPRESS
-            return { ...state, myFavorites: action.payload, allCharacters: action.payload };
+            return { 
+                ...state, 
+                myFavorites: action.payload, 
+                allCharacters: action.payload 
+            };
 
         case REMOVE_FAV:
             //ANTES DE EXPRESS
@@ -23,36 +29,41 @@ function rootReducer(state = initialState, action){
             //     myFavorites: [...remove],
             // }
             //DESPUES DE EXPRESS
-            return { ...state, myFavorites: action.payload };
+            return { 
+                ...state, 
+                myFavorites: action.payload,
+            };
 
         case FILTER:
             return{
                 ...state,
                 myFavorites: state.allCharacters.filter(
                     (character)=>character.gender===action.payload
-                ),
+                )
             }
 
         case ORDER:
             let ordenados=[];
-            if(action.payload ==='Ascendente'){
+            if(action.payload==='Ascendente'){
                 ordenados=state.myFavorites.sort((a,b)=>a.id>b.id ? 1 : -1)
-            } else if(action.payload ==='Descendente'){
-                ordenados=state.myFavorites.sort((a,b)=>a.id<b.id ? -1 : 1)
+            } else if(action.payload==='Descendente'){
+                ordenados=state.myFavorites.sort((a,b)=>b.id>a.id ? 1 : -1)
             }
             return{
                 ...state,
-                myFavorites: [...ordenados],
+                myFavorites:[...ordenados],
             }
 
         case RESET:
             return {
                 ...state,
-                myFavorites: state.allCharacters,
+                myFavorites: state.allCharacters,   
             }
 
         default:
-            return {...state};
+            return {
+                ...state,
+            };
     };
 }
 

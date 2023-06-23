@@ -7,30 +7,35 @@ import { addFavorite, removeFavorite } from '../../redux/actions';
 import style from './card.module.css'
 
 function Card(props) {
-
-   const navigate = useNavigate();
-
+   const navigate=useNavigate();
    const {character, onClose, addFavorite, removeFavorite, favorites}=props;
-   
-   const [isFav, setFav] = useState(false);
+   const {image, name, id} = character
+   const [closeBtn, setCloseBtn]=useState(true)
+   const [isFav, setFav]=useState(false);
+
+   useEffect(()=>{
+      if(!onClose){
+         setCloseBtn(false)
+      }
+   },[])
+
+   useEffect(() => {
+      // if(favorites.length > 0){
+      //    const fav = favorites.find(fav => fav.id === character.id);
+      //    if(fav){
+      //       setFav(true);
+      //    }
+      // }
+      favorites.forEach((fav) => {     
+         if (fav.id=== id) {    
+            setFav(true);
+         }
+      });
+   }, [favorites]);
 
    function navigateHandler(){
       navigate(`/detail/${character.id}`);
    }
-
-   useEffect(() => {
-      if(favorites.length > 0){
-         const fav = favorites.find(fav => fav.id === character.id);
-         if(fav){
-            setFav(true);
-         }
-      }
-      // favorites.forEach((fav) => {     //NO ME FUNCIONA CON FOREACH
-      //    if (fav.id === Number(character.id)) {    
-      //       setFav(true);
-      //    }
-      // });
-   }, [favorites]);
 
    function handleFavorite(character){
       if(!isFav){
@@ -44,11 +49,11 @@ function Card(props) {
 
    return (    
       <div className={style.contenedor}>        
-         <button onClick={()=>{onClose(character.id)}}>X</button>
-         <h2>{character.name}</h2>
-         <img src={character.image} alt='' onClick={navigateHandler}/>
+          {closeBtn && (<button onClick={()=>{onClose(character.id)}}>X</button>)}
+         <h2>{name}</h2>
+         <img src={image} alt={name} onClick={navigateHandler}/>
          {isFav ? (<button onClick={()=>handleFavorite(character.id)}>❤️</button>)
-            :(<button onClick={()=>handleFavorite(character)}>🤍</button>)
+                : (<button onClick={()=>handleFavorite(character)}>🤍</button>)
          }
       </div>
    );
@@ -56,15 +61,15 @@ function Card(props) {
 
 const mapDispatchToProps=(dispatch)=>{
    return {
-      addFavorite: (character)=>dispatch(addFavorite(character)),
-      removeFavorite: (id)=>dispatch(removeFavorite(id))
-   }
-}
+      addFavorite:(character)=>dispatch(addFavorite(character)),
+      removeFavorite:(id)=>dispatch(removeFavorite(id)),
+   };
+};
 
 const mapStateToProps=(state)=>{
    return {
       favorites: state.myFavorites,
-   }
-}
+   };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Card)

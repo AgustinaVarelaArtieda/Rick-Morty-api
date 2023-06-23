@@ -4,10 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import Cards from "../Cards/Cards";
 import { orderCards, filterCards, resetFav } from "../../redux/actions";
 
-export default function Favorites() {
-
-  const dispatch= useDispatch();
-  const favorites= useSelector(state=>state.myFavorites);
+export default function Favorites(){
+  const dispatch=useDispatch();
+  const favorites=useSelector((state)=>state.myFavorites);
 
   function handleSort(e){
     dispatch(orderCards(e.target.value))
@@ -24,7 +23,6 @@ export default function Favorites() {
   return(
     <div>
       <select placeholder="Gender" onChange={handleFilter}> 
-      <option disabled selected value="">Order</option>
         {['Male','Female','unknown','Genderless'].map((gender)=>(
            <option value={gender}>{gender}</option>
           ))}

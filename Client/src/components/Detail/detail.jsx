@@ -25,14 +25,33 @@ export default function Detail(){
       }, [id]);
 
     return ( //AQUI se cambia como se renderiza la info
-        <div className={style.detalle}>
-            <h1>{character.name}</h1>
-            <img src={character.image} alt={character.name} />
-            <p>{character.species}</p>
-            <p>{character.status}</p>
-            <p>{character.gender}</p>
-            <p>{character.origin?.name}</p>
-            <p>{character.location?.name}</p>
+      <div className={style.detalle}>
+        <div>
+          <h2>{character.name}</h2>
+          <img src={character.image} alt={character.name} />
         </div>
+        <div>
+          <div>
+            <h3>Species:</h3>
+            <p>{character.species}</p>
+          </div>
+          <div>
+            <h3>Gender:</h3>
+            <p>{character.gender}</p>
+          </div>
+          <div>
+            <h3>Status:</h3>
+            <p>{character.status}</p>
+          </div>
+          <div>
+            <h3>Origin:</h3>
+            <p>{character.origin}</p>
+          </div>
+          <div>
+            <h3>Location:</h3>
+            <p>{character.location}</p>
+          </div>
+        </div>
+      </div>
     )
 }

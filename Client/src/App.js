@@ -8,41 +8,26 @@ import Detail from './components/Detail/detail';
 import ErrorPage from './components/ErrorPage/errorPage';
 import Form from './components/Form/form';
 import Favorites from './components/Favoritos/favorites';
+import { removeFavorite } from './redux/actions';
 
 import axios from 'axios';
 
 import { useState, useEffect } from 'react';      //para crear estados LOCALES 
 import { Route, Routes, useLocation, NavLink, useNavigate} from 'react-router-dom';
-
-
-// const example = {
-//    id: 1,
-//    name: 'Rick Sanchez',
-//    status: 'Alive',
-//    species: 'Human',
-//    gender: 'Male',
-//    origin: {
-   //       name: 'Earth (C-137)',
-   //       url: 'https://rickandmortyapi.com/api/location/1',
-   //    },
-   //    image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-   // };
+import { useDispatch } from 'react-redux';
    
-function App() {
-   //BORRAR ESTA FUNCION DE ABAJO Y REEMPLAZARLA...
-   //const onSearch = (id) =>{   //y una funcion que se encarga de modificarlo
-   //   setCharacters([...characters, example])   //seteamos con una copia de todo lo que ya tiene el estado
-   //}
-      
+function App() { 
    //destructuramos [ESTADO, FUNCION SETEADORA DEL ESTADO]
    const [characters, setCharacters] = useState([]);     //el useState recibe un estado INICIAL
-   const location=useLocation()
-
-   //invoco el useNavigation
-   const navigate=useNavigate();
    //creo un estado local ACCESS
    const [access,setAccess]=useState(false)
-   
+
+   const location=useLocation()
+   //invoco el useNavigation
+   const navigate=useNavigate();
+   //para botón close
+   const dispatch=useDispatch()
+
    //creo parámetros fijos para loguearme-ANTES DE EXPRESS
    // const EMAIL="agusvarela5@gmail.com";
    // const PASSWORD="agus123";
@@ -56,15 +41,19 @@ function App() {
    //          alert("Datos incorrectos")
    //          }
    // }
+   
    //Funcion LOGIN - CON EXPRESS
-   function loginHandler(userData) {
-      const { email, password } = userData;
-      const URL = 'http://localhost:3001/rickandmorty/login';
-      axios(URL + `?email=${email}&password=${password}`).then(({data}) => {
-         const {access} = data;
-         setAccess(data);
-         access && navigate('/home');
-      });
+   async function loginHandler(userData) {
+      try {
+         const {email, password}=userData;
+         const URL='http://localhost:3001/rickandmorty/login';
+         const {data}= await axios(URL + `?email=${email}&password=${password}`)
+         const {access}=data;
+            setAccess(data);
+            access && navigate('/home');
+      } catch (error) { //averiguar mensajes de error, alertas, etc
+         console.log(error)
+      }
    }
 
    //Para verificar si estas logueado
@@ -73,8 +62,9 @@ function App() {
    }, [access]);
    
    //Funcion para BUSCAR 
-   function searchHandler(id) {
-      axios(`http://localhost:3001/rickandmorty/character/${id}`).then(({ data }) => {
+   async function searchHandler(id) {
+      try {
+         const {data}=await axios(`http://localhost:3001/rickandmorty/character/${id}`)
          if (data.name) {
             if(!characters.find((char)=>char.id===data.id)){
                setCharacters((oldChars) => [...oldChars, data]);
@@ -83,39 +73,38 @@ function App() {
             }
          } else {
             window.alert('¡No hay personajes con este ID!');
-         }})
+         }
+      } catch (error) {
+         console.log(error)
+      }
    }
  
-   
    //Funcion para CERRAR CARD
-   function closeHandler (id) {    
-      let deleted = characters.filter((character) => character.id !== Number(id));
-      
-      //extra de react-redux: removeFavorite(id); o esperar a usar HOOKS
-      
-      setCharacters(deleted);
+   function onClose(id){
+      setCharacters(characters.filter((character)=>character.id !== Number(id)))
+
+      dispatch(removeFavorite(id));
    }
    
    //Funcion para boton RANDOM
-   function randomHandler() {     
+   async function randomHandler() {   
       let haveIt=[] 
       let random=Math.floor(Math.random()*826)    //genero un numero random entre 0-826 y lo redondeo
-      
-      if(!haveIt.includes(random)){    //si el array no incluye el numero random
-         haveIt.push(random);          //lo agrego al array y lo muestro
-         fetch(`http://localhost:3001/rickandmorty/character/${random}`)
-        .then((response) => response.json())
-        .then((data) => {
-           if (data.name&&!characters.find((char)=>char.id===data.id)) {
-              setCharacters((oldChars) => [...oldChars, data]);
+      try {
+         if(!haveIt.includes(random)){    //si el array no incluye el numero random
+            haveIt.push(random);          //lo agrego al array y lo muestro
+            const {data}= await axios(`http://localhost:3001/rickandmorty/character/${random}`)
+            if (data.name && !characters.find((char)=>char.id===data.id)){
+               setCharacters((oldChars) => [...oldChars, data]);
             } else {
-               window.alert("Ya agregaste este personaje!");
+               window.alert("Personaje agregado!");
             }
-         });
-      } else return false
+         } else return false
+      } catch (error) {
+         console.log(error)
+      }  
    }
     
-   
 
    return (  //renderizado de los elementos que se muestran en la página
       <div className={style.App}>
@@ -130,7 +119,7 @@ function App() {
             <Route path="/" element={<Form login={loginHandler}/>} />
             <Route 
                path='/home' 
-               element={<Cards characters={characters} onClose={closeHandler}/>}
+               element={<Cards characters={characters} onClose={onClose}/>}
             />
             <Route path='/detail/:id' element={<Detail/>}/>
             <Route path='/about' element={<About/>}/>
