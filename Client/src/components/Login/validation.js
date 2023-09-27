@@ -18,6 +18,8 @@ function validar(user){
         errors.password='La contraseña debe incluir al menos un número'
     }else errors.password=null
 
+    
+
     return errors
 }
 
