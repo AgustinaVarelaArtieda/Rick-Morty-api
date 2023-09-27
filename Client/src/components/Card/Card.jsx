@@ -46,7 +46,6 @@ function Card(props) {
          setFav(false);
       }
    }
-
    return (    
       <div className={style.contenedor}>        
           {closeBtn && (<button onClick={()=>{onClose(character.id)}}>X</button>)}

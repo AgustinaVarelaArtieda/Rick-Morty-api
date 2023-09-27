@@ -15,6 +15,8 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';      //para crear estados LOCALES 
 import { Route, Routes, useLocation, NavLink, useNavigate} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
    
 function App() { 
    //destructuramos [ESTADO, FUNCION SETEADORA DEL ESTADO]
@@ -47,7 +49,7 @@ function App() {
       try {
          const {email, password}=userData;
 
-         const URL='http://localhost:3001/rickandmorty/login';
+         const URL='/login';
          
          const {data}= await axios(URL + `?email=${email}&password=${password}`)
          const {access}=data;
@@ -59,9 +61,9 @@ function App() {
    }
 
    //Para verificar si estas logueado
-   useEffect(() => {
-      !access && navigate("/");
-   }, [access]);
+   // useEffect(() => {
+   //    !access && navigate("/");
+   // }, [access]);
    
    //Funcion para BUSCAR 
    async function searchHandler(id) {
@@ -95,7 +97,7 @@ function App() {
       try {
          if(!haveIt.includes(random)){    //si el array no incluye el numero random
             haveIt.push(random);          //lo agrego al array y lo muestro
-            const {data}= await axios(`http://localhost:3001/rickandmorty/character/${random}`)
+            const {data}= await axios(`/character/${random}`)
             if (data.name && !characters.find((char)=>char.id===data.id)){
                setCharacters((oldChars) => [...oldChars, data]);
             } else {
@@ -119,6 +121,8 @@ function App() {
 
          <Routes>
             <Route path="/" element={<Form login={loginHandler}/>} />
+            <Route path='/login' element={<Login/>}/>
+            <Route path='/register' element={<Register/>}/>
             <Route 
                path='/home' 
                element={<Cards characters={characters} onClose={onClose}/>}
