@@ -4,26 +4,12 @@ export const ADD_FAV='ADD_FAV';
 export const REMOVE_FAV='REMOVE_FAV';
 export const FILTER='FILTER';
 export const ORDER='ORDER';
-export const RESET='RESET'
-
-//ADDFAV y REMOVEFAV ANTES DE EXPRESS
-// export function addFavorite(character){
-//     return {
-//         type: 'ADD_FAV',
-//         payload: character,
-//     };
-// }
-// export function removeFavorite(id){
-//     return {
-//         type: 'REMOVE_FAV',
-//         payload: id,
-//     };
-// }
-//DESPUES DE EXPRESS
+export const RESET='RESET';
+export const USER='USER';
 
 export const addFavorite=(character)=>{
     try{
-        const endpoint='http://localhost:3001/rickandmorty/fav';
+        const endpoint='/fav';
         return async (dispatch)=>{
             const {data}=await axios.post(endpoint,character)  //se envia una req de tipo POST 
             return dispatch({
@@ -39,7 +25,7 @@ export const addFavorite=(character)=>{
 
 export const removeFavorite=(id)=>{
     try {
-        const endpoint='http://localhost:3001/rickandmorty/fav/'+id;
+        const endpoint='/fav/'+id;
         return async (dispatch)=>{
             const {data}=await axios.delete(endpoint)
             return dispatch({
@@ -69,5 +55,12 @@ export function orderCards(orden){
 export function resetFav(){
     return {
         type: RESET
+    }
+}
+
+export function user(info){
+    return {
+        type: USER,
+        payload: info
     }
 }

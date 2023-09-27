@@ -1,12 +1,19 @@
-import {ADD_FAV, FILTER, REMOVE_FAV, ORDER, RESET} from "./actions";
+import {ADD_FAV, FILTER, REMOVE_FAV, ORDER, RESET, USER} from "./actions";
 
 let initialState = {
+    user:{},
     myFavorites:[],
     allCharacters:[]
 };
 
 function rootReducer(state=initialState, action){
     switch(action.type){
+        case USER:
+            return {
+                ...state,
+                user: action.payload
+            }
+            
         case ADD_FAV:
             //ANTES DE EXPRESS
             // const added=[...state.myFavorites, action.payload]
