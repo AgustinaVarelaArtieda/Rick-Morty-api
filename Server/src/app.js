@@ -18,8 +18,12 @@ app.use((req, res, next) => {
     next();
 });
 
- app.use(express.json());
+app.options('/rickandmorty/users/login', (req, res) => {
+  res.sendStatus(200);
+});
 
- app.use('/rickandmorty',mainRouter)
+app.use(express.json());
+
+app.use('/rickandmorty',mainRouter)
 
 module.exports= app

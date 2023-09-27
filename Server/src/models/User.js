@@ -5,6 +5,7 @@ module.exports = (sequelize) => {
       id: {
          type: DataTypes.INTEGER,
          primaryKey: true,
+         autoIncrement:true,
          allowNull:false
       },
       email:{
@@ -15,6 +16,10 @@ module.exports = (sequelize) => {
       password:{
          type: DataTypes.STRING,
          allowNull:false
-      }
+      },
+      username:{
+         type: DataTypes.STRING,
+         allowNull:false
+      },
    }, { timestamps: false });
 };
