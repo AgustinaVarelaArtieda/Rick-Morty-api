@@ -10,7 +10,8 @@ export default function Favorites(props){
 
   const dispatch=useDispatch();
 
-  const {favorites, isFavorite}=props
+  const {favorites, isFavorite,fetchFavorites }=props
+
   
   function handleSort(e){
     dispatch(orderCards(e.target.value))
@@ -40,7 +41,7 @@ export default function Favorites(props){
 
       <button onClick={handleReset}>Reset filters</button>
 
-      <Cards characters={favorites} isFavorite={isFavorite}/>
+      <Cards characters={favorites} isFavorite={isFavorite} fetchFavorites={fetchFavorites}/>
     </div>  
   );
 }

@@ -52,13 +52,14 @@ function App() {
    }
 
    //Favoritos
+   const fetchFavorites = async () => {
+     const favorites = await getFav(user.id);
+     setFavorites(favorites);
+   };
+
    useEffect(() => {
-      const fetchFavorites = async () => {
-        const favorites = await getFav(user.id);
-        setFavorites(favorites);
-      };
       fetchFavorites();
-    }, [user.id]);
+    }, []);
 
     function isFavorite(idChar) {
       if (favorites) {
@@ -107,11 +108,11 @@ function App() {
             <Route path='/register' element={<Register/>}/>
             <Route 
                path='/home' 
-               element={<Cards characters={characters} favorites={favorites} onClose={onClose} isFavorite={isFavorite}/>}
+               element={<Cards characters={characters} favorites={favorites} onClose={onClose} isFavorite={isFavorite} fetchFavorites={fetchFavorites}/>}
             />
             <Route path='/detail/:id' element={<Detail/>}/>
             <Route path='/about' element={<About/>}/>
-            <Route path='/favorites' element={<Favorites favorites={favorites} isFavorite={isFavorite}/>}/>
+            <Route path='/favorites' element={<Favorites favorites={favorites} isFavorite={isFavorite} fetchFavorites={fetchFavorites}/>}/>
             <Route path='*' element={<ErrorPage/>}/>
          </Routes>  
       </div>

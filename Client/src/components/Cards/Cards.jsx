@@ -5,7 +5,11 @@ import { useState, useEffect } from 'react';
 import { addFav, removeFav } from '../../utils/favorites/callsFav.js';
 
 export default function Cards(props) {
-  const {characters, onClose, isFavorite} = props;
+  const {characters, onClose, isFavorite, fetchFavorites} = props;
+
+  useEffect(()=>{
+    fetchFavorites();
+  },[])
 
   return (
     <div className={style.cartas}>
