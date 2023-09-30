@@ -6,9 +6,7 @@ import Nav from './components/Nav/Nav.jsx'
 import About from './components/About/about';
 import Detail from './components/Detail/detail';
 import ErrorPage from './components/ErrorPage/errorPage';
-import Form from './components/Form/form';
 import Favorites from './components/Favoritos/favorites';
-import { removeFavorite } from './redux/actions';
 
 import axios from 'axios';
 
@@ -21,75 +19,37 @@ import Register from './components/Register/Register';
 function App() { 
    //destructuramos [ESTADO, FUNCION SETEADORA DEL ESTADO]
    const [characters, setCharacters] = useState([]);     //el useState recibe un estado INICIAL
-   //creo un estado local ACCESS
-   const [access,setAccess]=useState(false)
 
    const location=useLocation()
    //invoco el useNavigation
    const navigate=useNavigate();
    //para botón close
    const dispatch=useDispatch()
-
-   //creo parámetros fijos para loguearme-ANTES DE EXPRESS
-   // const EMAIL="agusvarela5@gmail.com";
-   // const PASSWORD="agus123";
-
-   //Funcion LOGIN - ANTES DE EXPRESS
-   // function loginHandler(data){
-   //    if(data.email===EMAIL && data.password===PASSWORD){
-   //       setAccess(true)
-   //       navigate('/home')
-   //       }else{
-   //          alert("Datos incorrectos")
-   //          }
-   // }
-   
-   //Funcion LOGIN - CON EXPRESS
-   async function loginHandler(userData) {
-      try {
-         const {email, password}=userData;
-
-         const URL='/login';
-         
-         const {data}= await axios(URL + `?email=${email}&password=${password}`)
-         const {access}=data;
-            setAccess(data);
-            access && navigate('/home');
-      } catch (error) { //averiguar mensajes de error, alertas, etc
-         console.log(error)
-      }
-   }
-
-   //Para verificar si estas logueado
-   // useEffect(() => {
-   //    !access && navigate("/");
-   // }, [access]);
    
    //Funcion para BUSCAR 
    async function searchHandler(id) {
       try {
-         const {data}=await axios(`http://localhost:3001/rickandmorty/character/${id}`)
+         const {data}=await axios(`/character/${id}`)
          if (data.name) {
             if(!characters.find((char)=>char.id===data.id)){
                setCharacters((oldChars) => [...oldChars, data]);
             }else {
-               window.alert("Ya agregaste este personaje!");
+               alert("Ya agregaste este personaje!");
             }
          } else {
-            window.alert('¡No hay personajes con este ID!');
+            alert('¡No hay personajes con este ID!');
          }
       } catch (error) {
-         console.log(error)
+         console.log('error en el front ',error)
       }
    }
  
    //Funcion para CERRAR CARD
    function onClose(id){
       setCharacters(characters.filter((character)=>character.id !== Number(id)))
-
-      dispatch(removeFavorite(id));
+      alert('personaje eliminado')
    }
-   
+
    //Funcion para boton RANDOM
    async function randomHandler() {   
       let haveIt=[] 
@@ -101,11 +61,11 @@ function App() {
             if (data.name && !characters.find((char)=>char.id===data.id)){
                setCharacters((oldChars) => [...oldChars, data]);
             } else {
-               window.alert("Personaje agregado!");
+               alert("Personaje agregado!");
             }
          } else return false
       } catch (error) {
-         console.log(error)
+         console.log('error en el front',error)
       }  
    }
     
@@ -120,8 +80,7 @@ function App() {
          <Nav onSearch={searchHandler} random={randomHandler}/>}
 
          <Routes>
-            <Route path="/" element={<Form login={loginHandler}/>} />
-            <Route path='/login' element={<Login/>}/>
+            <Route path='/' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
             <Route 
                path='/home' 
@@ -129,7 +88,7 @@ function App() {
             />
             <Route path='/detail/:id' element={<Detail/>}/>
             <Route path='/about' element={<About/>}/>
-            <Route path='/favorites' element={<Favorites />} />
+            <Route path='/favorites' element={<Favorites/>} />
             <Route path='*' element={<ErrorPage/>}/>
          </Routes>  
       </div>

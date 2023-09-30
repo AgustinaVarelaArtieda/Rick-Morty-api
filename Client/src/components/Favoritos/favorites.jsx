@@ -3,10 +3,24 @@ import { useSelector, useDispatch } from "react-redux";
 
 import Cards from "../Cards/Cards";
 import { orderCards, filterCards, resetFav } from "../../redux/actions";
+import { useEffect, useState } from "react";
+import { getFav } from "../../utils/favorites/callsFav";
 
-export default function Favorites(){
+export default function Favorites(props){
+  const {addFav,removeFav}=props
   const dispatch=useDispatch();
-  const favorites=useSelector((state)=>state.myFavorites);
+  const user=useSelector((state)=>state.user)
+  const [favorites, setFavorites]=useState([])
+
+  useEffect(()=>{
+    if(user){
+      setFavorites(getFav(user.id))
+    }else{
+      return(<div>Loading...</div>)
+    }
+  },[user])
+
+
 
   function handleSort(e){
     dispatch(orderCards(e.target.value))
@@ -35,15 +49,8 @@ export default function Favorites(){
       </select>
 
       <button onClick={handleReset}>Reset filters</button>
-        <Cards characters={favorites}/>
-      </div>  
-    );
+
+      <Cards characters={favorites} addFav={addFav} removeFav={removeFav} userId={user?.id}/>
+    </div>  
+  );
 }
-
-// const mapStateToProps=(state)=>{
-//     return{
-//         favorites: state.myFavorites,
-//     }
-// }
-
-// export default connect (mapStateToProps,null)(Favorites)

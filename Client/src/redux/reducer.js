@@ -9,6 +9,7 @@ let initialState = {
 function rootReducer(state=initialState, action){
     switch(action.type){
         case USER:
+            console.log(state.user)
             return {
                 ...state,
                 user: action.payload

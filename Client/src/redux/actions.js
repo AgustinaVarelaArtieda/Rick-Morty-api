@@ -9,7 +9,7 @@ export const USER='USER';
 
 export const addFavorite=(character)=>{
     try{
-        const endpoint='/fav';
+        const endpoint='/favorites/add/';
         return async (dispatch)=>{
             const {data}=await axios.post(endpoint,character)  //se envia una req de tipo POST 
             return dispatch({
