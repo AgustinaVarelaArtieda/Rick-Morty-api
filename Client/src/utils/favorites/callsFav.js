@@ -1,10 +1,15 @@
 import axios from 'axios';
 
 export async function getFav(userId){
+  const token = localStorage.getItem('token');
     try {
-      const favorites=await axios.get(`/favorites/${userId}`)
+      const favorites=await axios.get(`/favorites/${userId}`,{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      })
       if(favorites.status===200){
-        return favorites.data
+        return favorites.data[0].Favorites
       }else{
         alert('Ocurrio un error al traer favoritos!')
       }
@@ -15,7 +20,12 @@ export async function getFav(userId){
 
 export async function addFav(userId,body){
     try {
-      const response=await axios.post(`/favorites/add/${userId}`, body)
+      const token = localStorage.getItem('token');
+      const response=await axios.post(`/favorites/add/${userId}`, body,{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      })
       if(response.status===200){
         alert('Agregado a favoritos!')
       }else{
@@ -28,7 +38,12 @@ export async function addFav(userId,body){
 
 export async function removeFav(userId,id){
     try {
-      const response=await axios.delete(`/favorites/rem/${userId}/${id}`)
+      const token = localStorage.getItem('token');
+      const response=await axios.delete(`/favorites/rem/${userId}/${id}`,{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      })
       if(response.status===200){
         alert('Eliminado de favoritos!')
       }else{

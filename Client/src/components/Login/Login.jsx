@@ -41,7 +41,9 @@ export default function Login(){
                 const response=await axios.post('/users/login',body)
                 alert('Bienvenido')
                 navigate('/home')
-                dispatch(user(response.data.user))
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+        
+                localStorage.setItem('token', response.data.token);
             } catch (error) {
                 alert('Usuario no registrado')
                 navigate('/register')

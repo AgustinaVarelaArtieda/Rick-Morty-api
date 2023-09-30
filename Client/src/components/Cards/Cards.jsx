@@ -1,14 +1,15 @@
 import Card from '../Card/Card.jsx';
 import style from "./Cards.module.css";
+import { useState, useEffect } from 'react';
 
 import { addFav, removeFav } from '../../utils/favorites/callsFav.js';
 
 export default function Cards(props) {
-  const {characters, onClose} = props;
+  const {characters, onClose, isFavorite} = props;
 
   return (
     <div className={style.cartas}>
-      {characters.map((character,index)=>(
+      {characters!==null? characters?.map((character,index)=>(
         <Card 
           key={index} 
           character={character} 
@@ -16,8 +17,11 @@ export default function Cards(props) {
           addFav={addFav} 
           removeFav={removeFav}
           
+          isFavorite={isFavorite}
           />
-      ))}
+      )):(
+        <h1>No tienes personajes agregados</h1>
+      )}
     </div>
   );
 }

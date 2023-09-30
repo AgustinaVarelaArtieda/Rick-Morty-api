@@ -6,7 +6,6 @@ import Nav from './components/Nav/Nav.jsx'
 import About from './components/About/about';
 import Detail from './components/Detail/detail';
 import ErrorPage from './components/ErrorPage/errorPage';
-import Favorites from './components/Favoritos/favorites';
 
 import axios from 'axios';
 
@@ -15,10 +14,18 @@ import { Route, Routes, useLocation, NavLink, useNavigate} from 'react-router-do
 import { useDispatch } from 'react-redux';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
+import { getFav } from './utils/favorites/callsFav';
+import Favorites from './components/Filtros/favorites';
    
 function App() { 
    //destructuramos [ESTADO, FUNCION SETEADORA DEL ESTADO]
    const [characters, setCharacters] = useState([]);     //el useState recibe un estado INICIAL
+
+   const [favorites, setFavorites] = useState([]);
+
+   const [logued, setLogued]=useState([false])
+
+   const user = JSON.parse(localStorage.getItem('user'));
 
    const location=useLocation()
    //invoco el useNavigation
@@ -43,7 +50,24 @@ function App() {
          console.log('error en el front ',error)
       }
    }
- 
+
+   //Favoritos
+   useEffect(() => {
+      const fetchFavorites = async () => {
+        const favorites = await getFav(user.id);
+        setFavorites(favorites);
+      };
+      fetchFavorites();
+    }, [user.id]);
+
+    function isFavorite(idChar) {
+      if (favorites) {
+        console.log('favoritos', favorites, 'idChar', idChar);
+        const favorite = favorites.some((p) =>p.id === Number(idChar));
+        return favorite;
+      }
+    }
+   
    //Funcion para CERRAR CARD
    function onClose(id){
       setCharacters(characters.filter((character)=>character.id !== Number(id)))
@@ -68,7 +92,6 @@ function App() {
          console.log('error en el front',error)
       }  
    }
-    
 
    return (  //renderizado de los elementos que se muestran en la página
       <div className={style.App}>
@@ -84,11 +107,11 @@ function App() {
             <Route path='/register' element={<Register/>}/>
             <Route 
                path='/home' 
-               element={<Cards characters={characters} onClose={onClose}/>}
+               element={<Cards characters={characters} favorites={favorites} onClose={onClose} isFavorite={isFavorite}/>}
             />
             <Route path='/detail/:id' element={<Detail/>}/>
             <Route path='/about' element={<About/>}/>
-            <Route path='/favorites' element={<Favorites/>} />
+            <Route path='/favorites' element={<Favorites favorites={favorites} isFavorite={isFavorite}/>}/>
             <Route path='*' element={<ErrorPage/>}/>
          </Routes>  
       </div>

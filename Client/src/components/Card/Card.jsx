@@ -7,11 +7,11 @@ import style from './card.module.css'
 
 export default function Card(props) {
    const navigate=useNavigate();
-   const {character, onClose, addFav, removeFav}=props;
+   const {character, onClose, addFav, removeFav, isFavorite}=props;
 
    const {id,name,status,species,gender,origin,image} = character
 
-   const user=useSelector((state)=>state.user)
+   const user = JSON.parse(localStorage.getItem('user'));
 
    const [closeBtn, setCloseBtn]=useState(true)
 
@@ -21,13 +21,15 @@ export default function Card(props) {
       if(!onClose){
          setCloseBtn(false)
       }
+      const fav=isFavorite(id)
+      if(fav===true){
+         setFav(true)
+      }
    },[])
 
    function navigateHandler(){
       navigate(`/detail/${character.id}`);
    }
-
-   
 
    function handleFavorite(userId){
       if(!isFav){

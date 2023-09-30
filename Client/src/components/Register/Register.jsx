@@ -44,7 +44,8 @@ export default function Register(){
                 const response=await axios.post('/users/login',body)
                 alert('Usuario creado con exito! Bienvenido!')
                 navigate('/home')
-                dispatch(user(response.data.user))
+                localStorage.setItem('user', response.data.user);
+                localStorage.setItem('token', response.data.token);
             } catch (error) {
                 alert('Ocurrio un error al crear el usuario')
                 console.log(error)
