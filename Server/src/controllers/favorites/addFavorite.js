@@ -29,6 +29,8 @@ const addFavoriteCharacter=async(req,res)=>{
             })
             
             await newFavorite.addUser(user)
+
+            return res.status(200).json({message:'Favorite added'})
         }
 
     }catch(error){

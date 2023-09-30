@@ -1,7 +1,11 @@
 const express = require('express');
+const cors=require('cors')
 const app = express();
 
 const mainRouter=require('./routes');
+
+// Middleware para habilitar CORS
+app.use(cors());
 
 //MIDDLEWARE
 app.use((req, res, next) => {
